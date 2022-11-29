@@ -1,0 +1,66 @@
+---
+
+name: test
+
+"on":
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - README*
+      - LICENSE
+      - '.github/*.md'
+  pull_request:
+    paths-ignore:
+      - README*
+      - LICENSE
+      - '.github/*.md'
+
+env:
+  goversion: '1.19'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go:
+          - '1.19'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go }}
+      - name: Check code format
+        run: |
+          go mod download
+          count="$(go fmt ./... | wc -l)"
+          if [[ "$count" -ne 0 ]]; then
+            echo "[ERR] please run 'go fmt ./...'" >&2
+            exit 1
+          fi
+      - name: Static analysis
+        run: go vet .
+      #- run: go build ./cmd/ojosama
+      #- run: go install ./cmd/ojosama
+      - run: go test -cover ./...
+
+  cyclomatic-complexity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.goversion }}
+      - run: make setup-tools
+      - run: ./scripts/test_cyclomatic_complexity.sh
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.goversion }}
+      - run: go test -coverprofile=coverage.out ./...
+      - uses: codecov/codecov-action@v3
