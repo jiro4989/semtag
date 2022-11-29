@@ -49,6 +49,105 @@ func TestNewVersion(t *testing.T) {
 	}
 }
 
+func TestVersionBumpMajor(t *testing.T) {
+	tests := []struct {
+		desc string
+		ver  Version
+		want Version
+	}{
+		{
+			desc: "ok: bump",
+			ver: Version{
+				Prefix: "v",
+				Major:  0,
+				Minor:  1,
+				Patch:  2,
+			},
+			want: Version{
+				Prefix: "v",
+				Major:  1,
+				Minor:  0,
+				Patch:  0,
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.desc, func(t *testing.T) {
+			assert := assert.New(t)
+
+			tt.ver.BumpMajor()
+			assert.Equal(tt.want, tt.ver)
+		})
+	}
+}
+
+func TestVersionBumpMinor(t *testing.T) {
+	tests := []struct {
+		desc string
+		ver  Version
+		want Version
+	}{
+		{
+			desc: "ok: bump",
+			ver: Version{
+				Prefix: "v",
+				Major:  0,
+				Minor:  1,
+				Patch:  2,
+			},
+			want: Version{
+				Prefix: "v",
+				Major:  0,
+				Minor:  2,
+				Patch:  0,
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.desc, func(t *testing.T) {
+			assert := assert.New(t)
+
+			tt.ver.BumpMinor()
+			assert.Equal(tt.want, tt.ver)
+		})
+	}
+}
+
+func TestVersionBumpPatch(t *testing.T) {
+	tests := []struct {
+		desc string
+		ver  Version
+		want Version
+	}{
+		{
+			desc: "ok: bump",
+			ver: Version{
+				Prefix: "v",
+				Major:  0,
+				Minor:  1,
+				Patch:  2,
+			},
+			want: Version{
+				Prefix: "v",
+				Major:  0,
+				Minor:  1,
+				Patch:  3,
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.desc, func(t *testing.T) {
+			assert := assert.New(t)
+
+			tt.ver.BumpPatch()
+			assert.Equal(tt.want, tt.ver)
+		})
+	}
+}
+
 func TestVersionString(t *testing.T) {
 	tests := []struct {
 		desc string

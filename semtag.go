@@ -57,6 +57,21 @@ func NewDefaultVersion() Version {
 	}
 }
 
+func (v *Version) BumpMajor() {
+	v.Major++
+	v.Minor = 0
+	v.Patch = 0
+}
+
+func (v *Version) BumpMinor() {
+	v.Minor++
+	v.Patch = 0
+}
+
+func (v *Version) BumpPatch() {
+	v.Patch++
+}
+
 func (v *Version) String() string {
 	var sb strings.Builder
 
