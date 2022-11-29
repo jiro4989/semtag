@@ -14,8 +14,8 @@ type Version struct {
 	Minor               int
 	Patch               int
 	Separator           string
-	Suffix1             string
-	Suffix2             string
+	Suffix              string
+	CandidateVersion    string
 }
 
 type NewVersionInput struct {
@@ -25,8 +25,8 @@ type NewVersionInput struct {
 	Minor               int
 	Patch               int
 	Separator           string
-	Suffix1             string
-	Suffix2             string
+	Suffix              string
+	CandidateVersion    string
 }
 
 func NewVersion(input *NewVersionInput) *Version {
@@ -41,8 +41,8 @@ func NewVersion(input *NewVersionInput) *Version {
 		Minor:               input.Minor,
 		Patch:               input.Patch,
 		Separator:           input.Separator,
-		Suffix1:             input.Suffix1,
-		Suffix2:             input.Suffix2,
+		Suffix:              input.Suffix,
+		CandidateVersion:    input.CandidateVersion,
 	}
 }
 
@@ -54,8 +54,8 @@ func NewDefaultVersion() *Version {
 		Minor:               1,
 		Patch:               0,
 		Separator:           "",
-		Suffix1:             "",
-		Suffix2:             "",
+		Suffix:              "",
+		CandidateVersion:    "",
 	}
 }
 
@@ -90,14 +90,14 @@ func (v *Version) String() string {
 	sb.WriteString(".")
 	sb.WriteString(fmt.Sprint(v.Patch))
 
-	if v.Suffix1 != "" {
+	if v.Suffix != "" {
 		sb.WriteString(v.Separator)
-		sb.WriteString(v.Suffix1)
+		sb.WriteString(v.Suffix)
 	}
 
-	if v.Suffix2 != "" {
+	if v.CandidateVersion != "" {
 		sb.WriteString(v.Separator)
-		sb.WriteString(v.Suffix2)
+		sb.WriteString(v.CandidateVersion)
 	}
 	return sb.String()
 }
@@ -167,7 +167,7 @@ func Parse(input *ParseInput) (*Version, error) {
 	if err != nil {
 		return nil, err
 	}
-	v.Suffix1 = s
+	v.Suffix = s
 
 	s, err = readPart(r, v.Separator)
 	if err == io.EOF {
@@ -176,7 +176,7 @@ func Parse(input *ParseInput) (*Version, error) {
 	if err != nil {
 		return nil, err
 	}
-	v.Suffix2 = s
+	v.CandidateVersion = s
 
 	return &v, nil
 }
