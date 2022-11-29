@@ -186,9 +186,9 @@ func TestVersionString(t *testing.T) {
 				Patch:               0,
 				Separator:           "-",
 				Suffix:              "module1",
-				CandidateVersion:    "rc1",
+				CandidateVersion:    "rc.1",
 			},
-			want: "v-0.1.0-module1-rc1",
+			want: "v-0.1.0-module1-rc.1",
 		},
 	}
 
@@ -241,7 +241,7 @@ func TestParse(t *testing.T) {
 		{
 			desc: "ok: prefix separator",
 			input: &ParseInput{
-				Tag: "v-1.2.3-test-sushi",
+				Tag: "v-1.2.3-test-rc.1",
 			},
 			want: &Version{
 				Prefix:              "v",
@@ -251,7 +251,7 @@ func TestParse(t *testing.T) {
 				Patch:               3,
 				Separator:           "-",
 				Suffix:              "test",
-				CandidateVersion:    "sushi",
+				CandidateVersion:    "rc.1",
 			},
 			wantErr: false,
 		},
