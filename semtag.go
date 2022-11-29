@@ -145,6 +145,7 @@ func Parse(input *ParseInput) (*Version, error) {
 		return nil, err
 	}
 	v.Patch = n
+	r.UnreadRune()
 
 	ch, _, err := r.ReadRune()
 	if err == io.EOF {

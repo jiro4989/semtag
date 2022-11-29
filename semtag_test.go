@@ -222,6 +222,22 @@ func TestParse(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			desc: "ok: 2 suffix",
+			input: &ParseInput{
+				Tag: "v1.2.3-test-sushi",
+			},
+			want: &Version{
+				Prefix:    "v",
+				Major:     1,
+				Minor:     2,
+				Patch:     3,
+				Separator: "-",
+				Suffix1:   "test",
+				Suffix2:   "sushi",
+			},
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {
