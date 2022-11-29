@@ -10,12 +10,12 @@ func TestNewVersion(t *testing.T) {
 	tests := []struct {
 		desc  string
 		input *NewVersionInput
-		want  Version
+		want  *Version
 	}{
 		{
 			desc:  "ok: default version",
 			input: nil,
-			want: Version{
+			want: &Version{
 				Prefix: "v",
 				Major:  0,
 				Minor:  1,
@@ -30,7 +30,7 @@ func TestNewVersion(t *testing.T) {
 				Minor:  2,
 				Patch:  3,
 			},
-			want: Version{
+			want: &Version{
 				Prefix: "vv",
 				Major:  1,
 				Minor:  2,
@@ -197,6 +197,44 @@ func TestVersionString(t *testing.T) {
 			assert := assert.New(t)
 
 			got := tt.ver.String()
+			assert.Equal(tt.want, got)
+		})
+	}
+}
+
+func TestParse(t *testing.T) {
+	tests := []struct {
+		desc    string
+		input   *ParseInput
+		want    *Version
+		wantErr bool
+	}{
+		{
+			desc: "ok: standard version",
+			input: &ParseInput{
+				Tag: "v1.2.3",
+			},
+			want: &Version{
+				Prefix: "v",
+				Major:  1,
+				Minor:  2,
+				Patch:  3,
+			},
+			wantErr: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.desc, func(t *testing.T) {
+			assert := assert.New(t)
+
+			got, err := Parse(tt.input)
+			if tt.wantErr {
+				assert.Error(err)
+				return
+			}
+
+			assert.NoError(err)
 			assert.Equal(tt.want, got)
 		})
 	}
