@@ -238,6 +238,23 @@ func TestParse(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			desc: "ok: prefix separator",
+			input: &ParseInput{
+				Tag: "v-1.2.3-test-sushi",
+			},
+			want: &Version{
+				Prefix:              "v",
+				PrefixWithSeparator: true,
+				Major:               1,
+				Minor:               2,
+				Patch:               3,
+				Separator:           "-",
+				Suffix1:             "test",
+				Suffix2:             "sushi",
+			},
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {
