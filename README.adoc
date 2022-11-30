@@ -1,0 +1,101 @@
+= Semtag
+:toc: left
+:sectnums:
+
+WIP
+
+== Usage
+
+=== Library
+
+=== CLI
+
+==== Bump patch/minor/major
+
+[source,bash]
+----
+$ git tag v0.1.0
+
+$ semtag patch
+DRYRUN: v0.1.1
+
+$ semtag patch -run
+v0.1.1
+
+$ git tag
+v0.1.0
+v0.1.1
+
+$ semtag minor
+DRYRUN: v0.2.0
+
+$ semtag minor -run
+v0.2.0
+
+$ git tag
+v0.1.0
+v0.1.1
+v0.2.0
+
+$ semtag major
+DRYRUN: v1.0.0
+
+$ semtag major -run
+v1.0.0
+
+$ git tag
+v0.1.0
+v0.1.1
+v0.2.0
+v1.0.0
+----
+
+==== Bump from stdin
+
+[source,bash]
+----
+$ git tag v0.1.0-module-a
+
+$ git tag v0.1.0-module-b
+$ git tag v0.1.1-module-b
+
+$ git tag v0.1.0-module-c
+
+$ git tag | sort -V | grep module-b | semtag patch -stdin
+DRYRUN: v0.1.2
+
+$ git tag | sort -V | grep module-b | semtag patch -stdin -run
+v0.1.2
+
+$ git tag | sort -t- -k3
+v0.1.0-module-a
+v0.1.0-module-b
+v0.1.1-module-b
+v0.1.2-module-b
+v0.1.0-module-c
+----
+
+==== Bump with search
+
+[source,bash]
+----
+$ git tag v0.1.0-module-a
+
+$ git tag v0.1.0-module-b
+$ git tag v0.1.1-module-b
+
+$ git tag v0.1.0-module-c
+
+$ semtag patch -search module-b
+DRYRUN: v0.1.2
+
+$ semtag patch -search module-b -run
+v0.1.2
+
+$ git tag | sort -t- -k3
+v0.1.0-module-a
+v0.1.0-module-b
+v0.1.1-module-b
+v0.1.2-module-b
+v0.1.0-module-c
+----
