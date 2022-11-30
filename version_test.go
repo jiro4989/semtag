@@ -3,20 +3,10 @@ package semtag
 import (
 	"testing"
 
-	"github.com/go-git/go-billy/v5/memfs"
-	"github.com/go-git/go-git/v5"
-	"github.com/go-git/go-git/v5/plumbing"
-	"github.com/go-git/go-git/v5/storage/memory"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestVersions(t *testing.T) {
-	r1, err := git.Init(memory.NewStorage(), memfs.New())
-	assert.NoError(t, err)
-	r1.CreateTag("v0.2.0", plumbing.NewHash("v0.2.0"), nil)
-	r1.CreateTag("v0.3.0", plumbing.NewHash("v0.3.0"), nil)
-	r1.CreateTag("v0.1.0", plumbing.NewHash("v0.1.0"), nil)
-
 	tests := []struct {
 		desc    string
 		input   *VersionsInput
@@ -26,9 +16,31 @@ func TestVersions(t *testing.T) {
 		{
 			desc: "ok: default version",
 			input: &VersionsInput{
-				Repository: r1,
+				Tagger: &MockTagger{
+					tags: []string{"v0.2.0", "v0.1.0", "v0.3.0"},
+					err:  nil,
+				},
 			},
-			want: nil,
+			want: []*Version{
+				{
+					Prefix: "v",
+					Major:  0,
+					Minor:  1,
+					Patch:  0,
+				},
+				{
+					Prefix: "v",
+					Major:  0,
+					Minor:  2,
+					Patch:  0,
+				},
+				{
+					Prefix: "v",
+					Major:  0,
+					Minor:  3,
+					Patch:  0,
+				},
+			},
 		},
 	}
 
