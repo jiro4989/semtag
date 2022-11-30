@@ -84,7 +84,7 @@ func TestLatestVersion(t *testing.T) {
 			desc: "ok: simpel tags",
 			input: &LatestVersionInput{
 				Tagger: &MockTagger{
-					tags: []string{"v0.2.0", "v0.1.0", "v0.3.0"},
+					tags: []string{"v0.3.0", "v0.1.0", "v0.2.0"},
 					err:  nil,
 				},
 			},
