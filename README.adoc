@@ -55,10 +55,8 @@ v1.0.0
 [source,bash]
 ----
 $ git tag v0.1.0-module-a
-
 $ git tag v0.1.0-module-b
 $ git tag v0.1.1-module-b
-
 $ git tag v0.1.0-module-c
 
 $ git tag | sort -V | grep module-b | semtag patch -stdin
@@ -80,10 +78,8 @@ v0.1.0-module-c
 [source,bash]
 ----
 $ git tag v0.1.0-module-a
-
 $ git tag v0.1.0-module-b
 $ git tag v0.1.1-module-b
-
 $ git tag v0.1.0-module-c
 
 $ semtag patch -search module-b
