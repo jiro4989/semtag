@@ -59,10 +59,6 @@ func Parse(input *ParseInput) (*Version, error) {
 		return nil, err
 	}
 	v.Separator = string(ch)
-	if strings.HasSuffix(v.Prefix, v.Separator) {
-		v.Prefix = v.Prefix[:len(v.Prefix)-1]
-		v.PrefixWithSeparator = true
-	}
 
 	s, err := readPart(r, v.Separator)
 	if err == io.EOF {

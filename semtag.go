@@ -6,25 +6,23 @@ import (
 )
 
 type Version struct {
-	Prefix              string
-	PrefixWithSeparator bool
-	Major               int
-	Minor               int
-	Patch               int
-	Separator           string
-	CandidateVersion    string
-	Suffix              string
+	Prefix           string
+	Major            int
+	Minor            int
+	Patch            int
+	Separator        string
+	CandidateVersion string
+	Suffix           string
 }
 
 type NewVersionInput struct {
-	Prefix              string
-	PrefixWithSeparator bool
-	Major               int
-	Minor               int
-	Patch               int
-	Separator           string
-	CandidateVersion    string
-	Suffix              string
+	Prefix           string
+	Major            int
+	Minor            int
+	Patch            int
+	Separator        string
+	CandidateVersion string
+	Suffix           string
 }
 
 func NewVersion(input *NewVersionInput) *Version {
@@ -33,27 +31,25 @@ func NewVersion(input *NewVersionInput) *Version {
 	}
 
 	return &Version{
-		Prefix:              input.Prefix,
-		PrefixWithSeparator: input.PrefixWithSeparator,
-		Major:               input.Major,
-		Minor:               input.Minor,
-		Patch:               input.Patch,
-		Separator:           input.Separator,
-		CandidateVersion:    input.CandidateVersion,
-		Suffix:              input.Suffix,
+		Prefix:           input.Prefix,
+		Major:            input.Major,
+		Minor:            input.Minor,
+		Patch:            input.Patch,
+		Separator:        input.Separator,
+		CandidateVersion: input.CandidateVersion,
+		Suffix:           input.Suffix,
 	}
 }
 
 func NewDefaultVersion() *Version {
 	return &Version{
-		Prefix:              "v",
-		PrefixWithSeparator: false,
-		Major:               0,
-		Minor:               1,
-		Patch:               0,
-		Separator:           "",
-		CandidateVersion:    "",
-		Suffix:              "",
+		Prefix:           "v",
+		Major:            0,
+		Minor:            1,
+		Patch:            0,
+		Separator:        "",
+		CandidateVersion: "",
+		Suffix:           "",
 	}
 }
 
@@ -77,9 +73,6 @@ func (v *Version) String() string {
 
 	if v.Prefix != "" {
 		sb.WriteString(v.Prefix)
-		if v.PrefixWithSeparator {
-			sb.WriteString(v.Separator)
-		}
 	}
 
 	sb.WriteString(fmt.Sprint(v.Major))
