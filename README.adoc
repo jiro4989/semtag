@@ -10,6 +10,58 @@ WIP
 
 === CLI
 
+==== New tag
+
+[source,bash]
+----
+$ semtag new
+DRYRUN: v0.1.0
+
+$ semtag new -run
+v0.1.0
+
+$ git tag
+v0.1.0
+----
+
+==== New tag with suffix
+
+[source,bash]
+----
+$ semtag new -suffix module-a
+DRYRUN: v0.1.0-module-a
+
+$ semtag new -suffix module-a -run
+v0.1.0-module-a
+
+$ git tag
+v0.1.0-module-a
+----
+
+==== New tag with path suffix
+
+[source,bash]
+----
+$ semtag new -path-suffix ./cmd/semtag/
+DRYRUN: v0.1.0-cmd-semtag
+
+$ semtag new -path-suffix ./cmd/semtag/ -run
+v0.1.0-cmd-semtag
+
+$ git tag
+v0.1.0-cmd-semtag
+
+$ semtag new -path-suffix ./cmd/semtag/main.go
+DRYRUN: v0.1.0-cmd-semtag-main.go
+
+$ semtag new -path-suffix ./cmd/semtag/main.go -run
+v0.1.0-cmd-semtag-main.go
+
+$ git tag
+v0.1.0-cmd-semtag
+v0.1.0-cmd-semtag-main.go
+----
+
 ==== Bump patch/minor/major
 
 [source,bash]
