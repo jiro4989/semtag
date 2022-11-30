@@ -41,6 +41,17 @@ func Versions(input *VersionsInput) ([]*Version, error) {
 	return sortedVers, nil
 }
 
-func LatestVersion() (*Version, error) {
-	return nil, nil
+type LatestVersionInput struct {
+	Tagger Tagger
+}
+
+func LatestVersion(input *LatestVersionInput) (*Version, error) {
+	vi := &VersionsInput{
+		Tagger: input.Tagger,
+	}
+	vers, err := Versions(vi)
+	if err != nil {
+		return nil, err
+	}
+	return vers[len(vers)-1], nil
 }
