@@ -1,6 +1,7 @@
 package semtag
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -14,7 +15,7 @@ func TestVersions(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			desc: "ok: default version",
+			desc: "ok: simpel tags",
 			input: &VersionsInput{
 				Tagger: &MockTagger{
 					tags: []string{"v0.2.0", "v0.1.0", "v0.3.0"},
@@ -41,6 +42,17 @@ func TestVersions(t *testing.T) {
 					Patch:  0,
 				},
 			},
+		},
+		{
+			desc: "ng: tagger returns error",
+			input: &VersionsInput{
+				Tagger: &MockTagger{
+					tags: []string{"v0.2.0", "v0.1.0", "v0.3.0"},
+					err:  errors.New("error"),
+				},
+			},
+			want:    nil,
+			wantErr: true,
 		},
 	}
 
