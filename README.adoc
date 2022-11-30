@@ -60,10 +60,10 @@ $ git tag v0.1.1-module-b
 $ git tag v0.1.0-module-c
 
 $ git tag | sort -V | grep module-b | semtag patch -stdin
-DRYRUN: v0.1.2
+DRYRUN: v0.1.2-module-b
 
 $ git tag | sort -V | grep module-b | semtag patch -stdin -run
-v0.1.2
+v0.1.2-module-b
 
 $ git tag | sort -t- -k3
 v0.1.0-module-a
@@ -73,7 +73,7 @@ v0.1.2-module-b
 v0.1.0-module-c
 ----
 
-==== Bump with search
+==== Bump with simple search
 
 [source,bash]
 ----
@@ -83,10 +83,10 @@ $ git tag v0.1.1-module-b
 $ git tag v0.1.0-module-c
 
 $ semtag patch -search module-b
-DRYRUN: v0.1.2
+DRYRUN: v0.1.2-module-b
 
 $ semtag patch -search module-b -run
-v0.1.2
+v0.1.2-module-b
 
 $ git tag | sort -t- -k3
 v0.1.0-module-a
