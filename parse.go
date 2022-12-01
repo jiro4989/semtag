@@ -1,4 +1,4 @@
-package semtag
+package main
 
 import (
 	"io"
