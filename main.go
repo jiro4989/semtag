@@ -62,13 +62,88 @@ func Main(args *CmdArgs) int {
 		return exitStatusCLIError
 	}
 
+	t := NewTagger()
+	bi := &bumpInput{
+		Tagger: t,
+		Run:    args.Run,
+	}
 	action := args.Args[0]
 	switch action {
 	case "new":
+		input := &NewVersionInput{
+			Prefix:    args.Prefix,
+			Major:     0,
+			Minor:     1,
+			Patch:     0,
+			Separator: "-",
+			Suffix:    args.Suffix,
+		}
+		v := NewVersion(input)
+		tag := v.String()
+		if args.Run {
+			if err := t.CreateTag(".", tag); err != nil {
+				Err(err)
+				return 1
+			}
+		}
+		printMsg(tag, args.Run)
 	case "major":
+		err := bump(bi, func(v *Version) {
+			v.BumpMajor()
+		})
+		if err != nil {
+			Err(err)
+			return 1
+		}
 	case "minor":
+		err := bump(bi, func(v *Version) {
+			v.BumpMinor()
+		})
+		if err != nil {
+			Err(err)
+			return 1
+		}
 	case "patch":
+		err := bump(bi, func(v *Version) {
+			v.BumpPatch()
+		})
+		if err != nil {
+			Err(err)
+			return 1
+		}
 	}
 
 	return exitStatusOK
+}
+
+type bumpInput struct {
+	Tagger Tagger
+	Run    bool
+}
+
+func bump(b *bumpInput, fn func(v *Version)) error {
+	input := &LatestVersionInput{
+		Tagger: b.Tagger,
+	}
+	v, err := LatestVersion(input)
+	if err != nil {
+		return fmt.Errorf("failed to get latest tag: %w", err)
+	}
+	if b.Run {
+		fn(v)
+	}
+	tag := v.String()
+	printMsg(tag, b.Run)
+	return nil
+}
+
+func wrapDryRun(msg string, run bool) string {
+	if !run {
+		msg = "DRYRUN: " + msg
+	}
+	return msg
+}
+
+func printMsg(msg string, run bool) {
+	fmt.Println(wrapDryRun(msg, run))
 }
