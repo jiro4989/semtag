@@ -62,7 +62,12 @@ func Main(args *CmdArgs) int {
 		return exitStatusCLIError
 	}
 
-	t := NewTagger()
+	t, err := NewTagger(".")
+	if err != nil {
+		Err(err)
+		return 1
+	}
+
 	bi := &bumpInput{
 		Tagger: t,
 		Run:    args.Run,
@@ -81,7 +86,7 @@ func Main(args *CmdArgs) int {
 		v := NewVersion(input)
 		tag := v.String()
 		if args.Run {
-			if err := t.CreateTag(".", tag); err != nil {
+			if err := t.CreateTag(tag); err != nil {
 				Err(err)
 				return 1
 			}

@@ -8,7 +8,7 @@ type MockTagger struct {
 	err  error
 }
 
-func (m *MockTagger) Tags(path string) ([]string, error) {
+func (m *MockTagger) Tags() ([]string, error) {
 	if m.err != nil {
 		return nil, m.err
 	}

@@ -8,27 +8,36 @@ import (
 )
 
 type Tagger interface {
-	Tags(string) ([]string, error)
-	CreateTag(string, string) error
+	Tags() ([]string, error)
+	CreateTag(string) error
+	PushTag(string) error
 }
 
 type GitTagger struct {
 	Tagger
+	repo *git.Repository
 }
 
-func (g *GitTagger) Tags(path string) ([]string, error) {
+func NewTagger(path string) (*GitTagger, error) {
 	r, err := git.PlainOpen(path)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to open repository: %w", err)
 	}
-	iter, err := r.Tags()
+	t := &GitTagger{
+		repo: r,
+	}
+	return t, nil
+}
+
+func (g *GitTagger) Tags() ([]string, error) {
+	iter, err := g.repo.Tags()
 	if err != nil {
 		return nil, err
 	}
 
 	tags := make([]string, 0)
 	iter.ForEach(func(ref *plumbing.Reference) error {
-		tag, err := r.TagObject(ref.Hash())
+		tag, err := g.repo.TagObject(ref.Hash())
 		if err != nil {
 			return err
 		}
@@ -43,23 +52,19 @@ func (g *GitTagger) Tags(path string) ([]string, error) {
 	return tags, nil
 }
 
-func (g *GitTagger) CreateTag(path, tag string) error {
-	r, err := git.PlainOpen(path)
-	if err != nil {
-		return fmt.Errorf("failed to open repository: %w", err)
-	}
-	h, err := r.Head()
+func (g *GitTagger) CreateTag(tag string) error {
+	h, err := g.repo.Head()
 	if err != nil {
 		return fmt.Errorf("failed to get HEAD: %w", err)
 	}
 	hash := h.Hash()
-	_, err = r.CreateTag(tag, hash, nil)
+	_, err = g.repo.CreateTag(tag, hash, nil)
 	if err != nil {
 		return fmt.Errorf("failed to create tag: %w", err)
 	}
 	return nil
 }
 
-func NewTagger() *GitTagger {
-	return &GitTagger{}
+func (g *GitTagger) PushTag(tag string) error {
+	return nil
 }

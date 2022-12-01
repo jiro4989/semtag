@@ -103,7 +103,7 @@ type VersionsInput struct {
 }
 
 func Versions(input *VersionsInput) ([]*Version, error) {
-	tags, err := input.Tagger.Tags(".")
+	tags, err := input.Tagger.Tags()
 	if err != nil {
 		return nil, err
 	}
