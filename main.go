@@ -12,8 +12,8 @@ const (
 // CIでビルド時に値を埋め込む。
 // 埋め込む値の設定は .goreleaser.yaml を参照。
 var (
-	version  = "dev"
-	revision = "dev"
+	appVersion = "dev"
+	revision   = "dev"
 )
 
 const (
@@ -36,7 +36,7 @@ func main() {
 
 func Main(args *CmdArgs) int {
 	if args.Version {
-		msg := fmt.Sprintf("%s %s (%s)", appName, version, revision)
+		msg := fmt.Sprintf("%s %s (%s)", appName, appVersion, revision)
 		fmt.Println(msg)
 		fmt.Println("")
 		fmt.Println("author:     jiro")
