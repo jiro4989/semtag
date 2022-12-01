@@ -14,5 +14,5 @@ func init() {
 }
 
 func Err(err error) {
-	errLogger.Println(err.Error())
+	errLogger.Output(2, err.Error())
 }
