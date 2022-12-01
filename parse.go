@@ -30,25 +30,25 @@ func Parse(input *ParseInput) (*Version, error) {
 		}
 		buf.WriteRune(ch)
 	}
-	v.Prefix = buf.String()
+	v.prefix = buf.String()
 
 	n, err := readNumber(r)
 	if err != nil {
 		return nil, err
 	}
-	v.Major = n
+	v.major = n
 
 	n, err = readNumber(r)
 	if err != nil {
 		return nil, err
 	}
-	v.Minor = n
+	v.minor = n
 
 	n, err = readNumber(r)
 	if err != nil {
 		return nil, err
 	}
-	v.Patch = n
+	v.patch = n
 	r.UnreadRune()
 
 	ch, _, err := r.ReadRune()
@@ -58,25 +58,25 @@ func Parse(input *ParseInput) (*Version, error) {
 	if err != nil {
 		return nil, err
 	}
-	v.Separator = string(ch)
+	v.separator = string(ch)
 
-	s, err := readPart(r, v.Separator)
+	s, err := readPart(r, v.separator)
 	if err == io.EOF {
 		return &v, nil
 	}
 	if err != nil {
 		return nil, err
 	}
-	v.CandidateVersion = s
+	v.candidateVersion = s
 
-	s, err = readPart(r, v.Separator)
+	s, err = readPart(r, v.separator)
 	if err == io.EOF {
 		return &v, nil
 	}
 	if err != nil {
 		return nil, err
 	}
-	v.Suffix = s
+	v.suffix = s
 
 	return &v, nil
 }

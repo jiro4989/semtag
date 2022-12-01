@@ -6,13 +6,13 @@ import (
 )
 
 type Version struct {
-	Prefix           string
-	Major            int
-	Minor            int
-	Patch            int
-	Separator        string
-	CandidateVersion string
-	Suffix           string
+	prefix           string
+	major            int
+	minor            int
+	patch            int
+	separator        string
+	candidateVersion string
+	suffix           string
 }
 
 type NewVersionInput struct {
@@ -31,64 +31,64 @@ func NewVersion(input *NewVersionInput) *Version {
 	}
 
 	return &Version{
-		Prefix:           input.Prefix,
-		Major:            input.Major,
-		Minor:            input.Minor,
-		Patch:            input.Patch,
-		Separator:        input.Separator,
-		CandidateVersion: input.CandidateVersion,
-		Suffix:           input.Suffix,
+		prefix:           input.Prefix,
+		major:            input.Major,
+		minor:            input.Minor,
+		patch:            input.Patch,
+		separator:        input.Separator,
+		candidateVersion: input.CandidateVersion,
+		suffix:           input.Suffix,
 	}
 }
 
 func NewDefaultVersion() *Version {
 	return &Version{
-		Prefix:           "v",
-		Major:            0,
-		Minor:            1,
-		Patch:            0,
-		Separator:        "",
-		CandidateVersion: "",
-		Suffix:           "",
+		prefix:           "v",
+		major:            0,
+		minor:            1,
+		patch:            0,
+		separator:        "",
+		candidateVersion: "",
+		suffix:           "",
 	}
 }
 
 func (v *Version) BumpMajor() {
-	v.Major++
-	v.Minor = 0
-	v.Patch = 0
+	v.major++
+	v.minor = 0
+	v.patch = 0
 }
 
 func (v *Version) BumpMinor() {
-	v.Minor++
-	v.Patch = 0
+	v.minor++
+	v.patch = 0
 }
 
 func (v *Version) BumpPatch() {
-	v.Patch++
+	v.patch++
 }
 
 func (v *Version) String() string {
 	var sb strings.Builder
 
-	if v.Prefix != "" {
-		sb.WriteString(v.Prefix)
+	if v.prefix != "" {
+		sb.WriteString(v.prefix)
 	}
 
-	sb.WriteString(fmt.Sprint(v.Major))
+	sb.WriteString(fmt.Sprint(v.major))
 	sb.WriteString(".")
-	sb.WriteString(fmt.Sprint(v.Minor))
+	sb.WriteString(fmt.Sprint(v.minor))
 	sb.WriteString(".")
-	sb.WriteString(fmt.Sprint(v.Patch))
+	sb.WriteString(fmt.Sprint(v.patch))
 
-	if v.CandidateVersion != "" {
-		sb.WriteString(v.Separator)
-		sb.WriteString(v.CandidateVersion)
+	if v.candidateVersion != "" {
+		sb.WriteString(v.separator)
+		sb.WriteString(v.candidateVersion)
 	}
 
-	if v.Suffix != "" {
-		sb.WriteString(v.Separator)
-		sb.WriteString(v.Suffix)
+	if v.suffix != "" {
+		sb.WriteString(v.separator)
+		sb.WriteString(v.suffix)
 	}
 
 	return sb.String()
