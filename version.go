@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"sort"
 
 	"github.com/hashicorp/go-version"
@@ -52,6 +53,9 @@ func LatestVersion(input *LatestVersionInput) (*Version, error) {
 	vers, err := Versions(vi)
 	if err != nil {
 		return nil, err
+	}
+	if len(vers) < 1 {
+		return nil, errors.New("no tags")
 	}
 	return vers[len(vers)-1], nil
 }
